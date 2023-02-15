@@ -1,4 +1,5 @@
 using DevEncurtaUrl.API.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,10 @@ builder.Services.AddCors(options =>
         }
     );
 });
-builder.Services.AddSingleton<DevEncurtaUrlDbContext>();
+var connectionString = builder.Configuration.GetConnectionString("DevEncurtaUrl");
+
+
+builder.Services.AddDbContext<DevEncurtaUrlDbContext>(o => o.UseSqlServer(connectionString));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
